@@ -3,10 +3,10 @@ from typing import List, Union
 
 
 def desc_as_doc_search(query: Union[List, str], 
-                  num_results_single=10, # number of results for a single query
-                  num_results_multi=2, # number of results for multiple queries
-                  lang='zh-CN', 
-                  advanced=True):
+                  num_results_single: int = 10, # number of results for a single query
+                  num_results_multi: int = 2, # number of results for multiple queries
+                  lang: str = 'zh-CN', 
+                  advanced: bool = True):
     """
     The 'description' field in the search result are deemed directly as the reference docs
     """
@@ -36,15 +36,15 @@ def desc_as_doc_search(query: Union[List, str],
 
 def page_as_doc_search(
                   query: Union[List, str], 
-                  num_results_single=10, # number of results for a single query
-                  num_results_multi=2, # number of results for multiple queries
-                  lang='zh-CN', 
-                  advanced=True):
+                  num_results_single: int = 10, # number of results for a single query
+                  num_results_multi: int = 2, # number of results for multiple queries
+                  lang:str = 'zh-CN', 
+                  advanced: bool = True):
     """
     Store webpages in the result in a vector database using LangChain(or llama index), which is deemed as reference docs.
     And the LLM will retrieve again in the database to get a answer more accurate
     """
-    pass
+    raise NotImplementedError
 
 
 """
