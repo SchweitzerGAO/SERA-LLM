@@ -84,4 +84,16 @@ There are cases that ChatGPT cannot process the question in a correct format. To
 
 3. Implemented in-prompt SERAG with ChatGPT API
 
-Comparison between raw ChatGPT and ChatGPT with SERAG is in `./demos`
+Comparison between raw ChatGPT and ChatGPT with SERAG-question is in `./demos/chatgpt/chatgpt-desc-question-*.txt`
+
+## Day 3: Description-as-Document with Prompt Engineering with ChatGPT API
+
+1. (Update) Implemented the function that process the question by keywords instead of by deeper questions
+Comparison between raw ChatGPT and ChatGPT with SERAG-keyword is in `./demos/chatgpt/chatgpt-desc-keyword-*.txt`
+
+2. Evaluated SERAG with ChatGPT on [hotpot_qa](https://huggingface.co/datasets/hotpot_qa) 
+
+F1-score:
+- With in-dataset doc reference: 0.715
+- Without in-dataset doc reference(with SERAG-keyword): 
+- Without in-dataset doc reference(with SERAG-question):   

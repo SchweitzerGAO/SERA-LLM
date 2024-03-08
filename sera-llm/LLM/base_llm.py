@@ -2,16 +2,16 @@ from typing import List, Union, Tuple
 from utils.search import desc_as_doc_search, page_as_doc_search
 class RagBaseLLM:
 
-    def __init__(self, model, k=3) -> None:
+    def __init__(self, model, k=3, lang='zh-CN', gen_keyword=True) -> None:
         """
         model: The LLM to interact with
         k: The number of questions to generate by the LLM
         """
         self.model = model
         self.k = k
-
+        self.lang = lang
+        self.gen_keyword = gen_keyword
         self._process_questions_system_input = None
-        self._process_questions_system_input_keyword = None
         self._process_questions_user_input = None
         self._final_system_prompt = None
         self._final_user_prompt = None
@@ -28,21 +28,22 @@ class RagBaseLLM:
                   self,
                   docs: List[str],
                   query: Union[List, str], 
-                  num_results_single: int = 10, # number of results for a single query
-                  num_results_multi: int = 3 # number of results for multiple queries
+                  num_results_single: int, # number of results for a single query
+                  num_results_multi: int # number of results for multiple queries
     ):
         docs.extend(
             desc_as_doc_search(
             query=query,
             num_results_single=num_results_single,
-            num_results_multi=num_results_multi
+            num_results_multi=num_results_multi,
+            lang=self.lang
         )
         )
         return docs
     def _get_page_as_doc(self, 
                          query: Union[List, str], 
-                         num_results_single: int = 10,
-                         num_results_multi: int = 3
+                         num_results_single: int,
+                         num_results_multi: int
                          ):
         return page_as_doc_search(
             query=query,
@@ -53,13 +54,33 @@ class RagBaseLLM:
     
     def _get_final_user_prompt(self, 
                           prompt: str, 
-                          method: str = "description", # 'description' or 'page'
-                          num_results_single: int = 10, # number of results for a single query
-                          num_results_multi:int = 3, # number of results for multiple queries
+                          method: str, # 'description' or 'page'
+                          num_results_single: int, # number of results for a single query
+                          num_results_multi:int, # number of results for multiple queries
                           ):
         raise NotImplementedError
 
 
     
-    def chat(self, prompt: str, method: str = 'desc'):
+    def chat(self, 
+             prompt: str, 
+             method: str,
+             num_results_single: int, # number of results for a single query
+             num_results_multi: int
+       ):
+        raise NotImplementedError
+    
+    def _get_final_user_prompt_hotpot(self, 
+                                      prompt: str, 
+                                      docs_list: List[str],
+                                      ):
+        raise NotImplementedError
+    
+    def evaluation_hotpot(self, 
+                    prompt: str,  
+                    docs_list: List[str] | None,
+                    method: str,
+                    num_results_single: int, # number of results for a single query
+                    num_results_multi: int  # number of results for multiple queries
+                    ):
         raise NotImplementedError

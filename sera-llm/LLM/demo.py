@@ -22,7 +22,7 @@ def demo_chatgpt_desc():
             ).choices[0].message.content
         output_rag = llm.chat(prompt=q)
         docs = llm.docs
-        with open('../../demos/chatgpt-desc-3.txt','a',encoding='utf-8') as f:
+        with open('../../demos/chatgpt-desc-keyword-1.txt','a',encoding='utf-8') as f:
             f.write(f"###############\nQuestion{i + 1}: {q}\n###############\n")
             f.write('-----------------------------------------\n')
             f.write("Raw ChatGPT\n")
