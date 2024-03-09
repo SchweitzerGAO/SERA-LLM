@@ -7,6 +7,7 @@ from typing import List
 from datasets import load_dataset
 from chatgpt import RagChatGPT, model
 from base_llm import RagBaseLLM
+import time
 
 dataset = load_dataset("hotpot_qa",'distractor',split='validation', cache_dir='../../hotpot-qa')
 
@@ -55,7 +56,8 @@ def f1_score(output, gt):
 
 def evaluate(llm: RagBaseLLM, 
              n: int = 100,
-             search: bool = False):
+             search: bool = False,
+             raw: bool = False):
     indices = generate_idx(n)
     prompts = get_prompts(indices)
     gts = get_gts(indices)
@@ -69,12 +71,13 @@ def evaluate(llm: RagBaseLLM,
         processed_gt = postprocess(gt)
         f1 += f1_score(processed_output, processed_gt)
         print(f'Question #{idx} finished')
+        time.sleep(3)
     print(f1 / len(gt))
         
         
 
 llm = RagChatGPT(model=model, lang='en')
 
-evaluate(llm, search=True)
+evaluate(llm)
 
 

@@ -14,23 +14,25 @@ class RagChatGPT(RagBaseLLM):
                  model, 
                  k=3, 
                  lang='zh-CN',
-                 gen_keyword=True) -> None:
-        super().__init__(model, k, lang, gen_keyword)
+                 rewrite_method='hyqr') -> None:
+        super().__init__(model, k, lang, rewrite_method)
         if self.lang == 'zh-CN':
-            if self.gen_keyword:
+            if self.rewrite_method == 'hykr':
                 self._process_questions_system_input = """
             你是一个诚实的问答助手，如果你认为你能直接回答以下问题，则按以下格式输出：“答案: 该问题的答案”，否则，请针对以下问题生成{k}个关键字并直接输出。
             注意：
             1. 总是生成易于进行搜索引擎检索的关键字
             2. 总是直接输出生成的关键字，不要任何附加输出
         """
-            else:
+            elif self.rewrite_method == 'hyqr':
                 self._process_questions_system_input = """
             你是一个诚实的问答助手，如果你认为你能直接回答以下问题，则按以下格式输出：“答案: 该问题的答案”，否则，请针对以下问题生成{k}个更加深入的问题并以“问题：问题内容”输出。
             注意：
             1. 总是生成易于进行搜索引擎检索的问题。例如，不要生成类似“您……”或“你……”的问题，
             2. 总是以“问题：问题内容”输出生成的问题，不要任何附加输出
         """
+            else:
+                raise NotImplementedError
             self._process_questions_user_input = """
                     问题：{question}
             """
@@ -51,31 +53,33 @@ class RagChatGPT(RagBaseLLM):
                     ...
             """
         else:
-            if self.gen_keyword:
+            if self.rewrite_method == 'hykr':
                 self._process_questions_system_input = """
             You are an honest Q&A assistant. If you think you can directly answer the following questions, output in the following format: "Answer: the answer to the question". Otherwise, please generate {k} keywords for the following questions and output them directly.
              Notice:
              1. Always generate keywords that are easy to retrieve by search engines
              2. Always output the generated keywords directly without any additional output
         """
-            else:
+            elif self.rewrite_method == 'hyqr':
                 self._process_questions_system_input = """
             You are an honest Q&A assistant. If you think you can directly answer the following questions, output in the following format: "Answer: the answer to the question". Otherwise, please generate {k} more in-depth questions for the following questions and "Question:Question content" output.
              Notice:
              1. Always generate questions that are easy to retrieve by search engines.
              2. Always output generated questions as "Question: Question content" without any additional output
         """
+            else:
+                raise NotImplementedError
             self._process_questions_user_input = """
                     Question：{question}
             """
             self._final_system_prompt = """
                 You are an honest Q&A assistant. The following are user questions and potentially useful documents. The documents are given in the format of "Index: Content":
-                 Please gradually and deeply think about the relationship between the problem and the document, and pay attention to the following during the thinking process:
-                 1. If you cannot answer the question directly, please refer to the documentation and try to answer it.
-                 2. If you refer to the document to answer this question, please mark the index of the reference document after the relevant answer.
-                 3. If you feel that the reference documentation cannot help you answer this question, please answer "I don't know the answer to this question yet"
-                 4. Do not output text that is not relevant to the question
-                 try to answer this question
+                Please gradually and deeply think about the relationship between the problem and the document, and pay attention to the following during the thinking process:
+                1. If you cannot answer the question directly, please refer to the documentation and try to answer it.
+                2. If you refer to the document to answer this question, please mark the index of the reference document after the relevant answer.
+                3. If you feel that the reference documentation cannot help you answer this question, please answer "I don't know the answer to this question yet"
+                4. Do not output text that is not relevant to the question
+                try to answer this question
             """
             self._final_user_prompt = """
                     Question：{question}
@@ -84,6 +88,7 @@ class RagChatGPT(RagBaseLLM):
                     {docs}
                     ...
             """
+    
 
     
     def _process_questions(self, 
@@ -100,7 +105,7 @@ class RagChatGPT(RagBaseLLM):
             )
         query = response.choices[0].message.content
         # print(query)
-        if self.gen_keyword:
+        if self.rewrite_method == 'hykr':
             if(query.startswith("关键字")):
                 final_query = query[4:]
             elif(query.startswith("Keywords")):
@@ -108,7 +113,7 @@ class RagChatGPT(RagBaseLLM):
             else:
                 final_query = prompt
             return (final_query, True)
-        else:
+        elif self.rewrite_method == 'hyqr':
             final_query = []
             if '问题' in query or 'Question' in query or 'question' in query:
                 questions = query.split('\n')
@@ -135,6 +140,8 @@ class RagChatGPT(RagBaseLLM):
                     return (query[7:], False)
                 else:
                     return (prompt, True)
+        else:
+            raise NotImplementedError
     
     def _get_final_user_prompt(self, 
                                prompt: str, 
@@ -281,7 +288,7 @@ Test code below
 """
 
 # ### Raw model 
-# question = "平型关大捷有什么历史意义？"
+# question = "强化学习中，PPO算法和DPO算法的主要区别是什么？列举3点"
 # raw_system_input = """
 #     你是一个诚实的问答助手，以下是用户的问题，请尝试回答这个问题，注意：
 #     1. 如果你不能直接回答这个问题，请回答“我还不了解这个问题的答案”
@@ -299,8 +306,8 @@ Test code below
 #       """)
 # print(output_raw)
 
-# ### RAG model
-# rag_llm = RagChatGPT(model, gen_keyword=False)
+### RAG model
+# rag_llm = RagChatGPT(model, rewrite_method='hykr')
 # # response = llm.test_process_questions("我要使用xtuner微调一个语言模型，该如何做？")
 # # print(response)
 # output_rag = rag_llm.chat(question)

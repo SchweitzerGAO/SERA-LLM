@@ -1,6 +1,7 @@
 from googlesearch import search
 from typing import List, Union
 
+GOOGLE_SEARCH_KEY = 'AIzaSyCeCxFvKd-4FUaVj8AI45zQNqSYgd4UPpo'
 
 def desc_as_doc_search(query: Union[List, str], 
                   num_results_single, # number of results for a single query

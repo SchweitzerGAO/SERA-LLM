@@ -2,15 +2,27 @@ from typing import List, Union, Tuple
 from utils.search import desc_as_doc_search, page_as_doc_search
 class RagBaseLLM:
 
-    def __init__(self, model, k=3, lang='zh-CN', gen_keyword=True) -> None:
+    def __init__(self, 
+                 model, 
+                 k, 
+                 lang, 
+                 rewrite_method) -> None:
         """
         model: The LLM to interact with
         k: The number of questions to generate by the LLM
+        lang: The language in which the user is querying
+        rewrite method: The method to rewrite the query:
+                        Supported methods code and corresponding methods are:
+                        1. hyqr: Hypothetical Query Retrieve
+                        2. hykr: Hypothetical Keyword Retrieve
+                        3. r3: Rewrite Retrieve Read(To be implemented)
+                        4. sp: Step-back Prompt(To be implemented)
         """
         self.model = model
         self.k = k
         self.lang = lang
-        self.gen_keyword = gen_keyword
+        self.rewrite_method = rewrite_method
+
         self._process_questions_system_input = None
         self._process_questions_user_input = None
         self._final_system_prompt = None

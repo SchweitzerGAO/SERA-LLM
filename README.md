@@ -1,7 +1,8 @@
 # SERA-LLM
 *Search Engine Retrieval Augmented Large Language Model*
 
-## Day 1: Description-as-Document with Prompt Engineering with ChatGPT WebUI
+> Intern working log below
+## Day 1: Description-as-Document with ChatGPT WebUI
 
 1. Implemented description-as-document retrieval from google
 
@@ -38,7 +39,7 @@ For **in-prompt SERAG** (*Search Engine Retrieval Augmented Generation*), a test
 
 However, this do not always work properly. ChatGPT tend to drop into hallucination than admit that it doesn't know this when the documents is irrelavent. Among these malfunctions there is [a surprising one](https://chat.openai.com/share/9c26faf9-4ad7-4430-ae03-2ca15833c628) which shows in multi-turn dialogue ChatGPT **can admit its incapability in answering the question only after the 1st turn of dialogue**
 
-## Day 2: Description-as-Document with Prompt Engineering with ChatGPT API
+## Day 2: Description-as-Document with ChatGPT API
 
 1. Splitted and tuned the prompt, taking the system prompt and the user input apart
 For question processing prompt:
@@ -55,7 +56,14 @@ process_questions_user_input = """
 ```
 When calling the gpt-turbo-3.5 API:
 ```python
-
+response = model.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                {"role": "system", "content": self._final_system_prompt},
+                {'role': 'user', "content": self._final_user_prompt}
+            ]
+            )
+      output = response.choices[0].message.content
 ```
 
 For final prompt input into ChatGPT:
@@ -86,7 +94,7 @@ There are cases that ChatGPT cannot process the question in a correct format. To
 
 Comparison between raw ChatGPT and ChatGPT with SERAG-question is in `./demos/chatgpt/chatgpt-desc-question-*.txt`
 
-## Day 3: Description-as-Document with Prompt Engineering with ChatGPT API(Evaluation)
+## Day 3: Description-as-Document with ChatGPT API(Evaluation)
 
 1. (Update) Implemented the function that process the question by keywords instead of by deeper questions
 Comparison between raw ChatGPT and ChatGPT with SERAG-keyword is in `./demos/chatgpt/chatgpt-desc-keyword-*.txt`
@@ -94,6 +102,15 @@ Comparison between raw ChatGPT and ChatGPT with SERAG-keyword is in `./demos/cha
 2. Evaluated SERAG with ChatGPT on [hotpot_qa](https://huggingface.co/datasets/hotpot_qa) 
 
 F1-score:
-- With in-dataset doc reference: 0.715
-- Without in-dataset doc reference(with SERAG-keyword): N/A
-- Without in-dataset doc reference(with SERAG-question): N/A
+- Without RAG: N/A
+- With RAG(documents from hotpot-qa): 0.715
+- With SERAG-keyword: N/A
+- with SERAG-question: N/A
+
+## Day 4: Periodical Summary
+Done: A naive SERAG system with Google Search and ChatGPT and its preliminary evaluation
+TODOs in the next period: 
+1. Implement R3 and Step-back Prompt query rewrite schemas
+2. Evaluate with LLM feedback
+3. Add DuckDuckGo as a search engine
+4. Implement Page-as-Ducument with ChatGPT API
