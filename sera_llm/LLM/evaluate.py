@@ -9,7 +9,7 @@ from chatgpt import RagChatGPT, model
 from base_llm import RagBaseLLM
 import time
 
-dataset = load_dataset("hotpot_qa",'distractor',split='validation', cache_dir='../../hotpot-qa')
+dataset = load_dataset("hotpot_qa",'distractor',split='validation', cache_dir='./hotpot-qa')
 
 def get_prompts(indices: int):
     return [dataset[i]['question'] for i in indices]
@@ -71,13 +71,13 @@ def evaluate(llm: RagBaseLLM,
         processed_gt = postprocess(gt)
         f1 += f1_score(processed_output, processed_gt)
         print(f'Question #{idx} finished')
-        time.sleep(3)
+        # time.sleep(1.5)
     print(f1 / len(gt))
         
         
 
-llm = RagChatGPT(model=model, lang='en')
+llm = RagChatGPT(model=model, lang='en',rewrite_method='hykr')
 
-evaluate(llm)
+evaluate(llm, search=True)
 
 

@@ -16,7 +16,6 @@ class RagBaseLLM:
                         1. hyqr: Hypothetical Query Retrieve
                         2. hykr: Hypothetical Keyword Retrieve
                         3. r3: Rewrite Retrieve Read(To be implemented)
-                        4. sp: Step-back Prompt(To be implemented)
         """
         self.model = model
         self.k = k

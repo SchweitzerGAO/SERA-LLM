@@ -102,15 +102,19 @@ Comparison between raw ChatGPT and ChatGPT with SERAG-keyword is in `./demos/cha
 2. Evaluated SERAG with ChatGPT on [hotpot_qa](https://huggingface.co/datasets/hotpot_qa) 
 
 F1-score:
-- Without RAG: N/A
 - With RAG(documents from hotpot-qa): 0.715
-- With SERAG-keyword: N/A
-- with SERAG-question: N/A
+- With SERAG-keyword: 0.890
+- with SERAG-question: 0.914
 
 ## Day 4: Periodical Summary
 Done: A naive SERAG system with Google Search and ChatGPT and its preliminary evaluation
 TODOs in the next period: 
-1. Implement R3 and Step-back Prompt query rewrite schemas
-2. Evaluate with LLM feedback
-3. Add DuckDuckGo as a search engine
-4. Implement Page-as-Ducument with ChatGPT API
+- [x] Add DuckDuckGo as a search engine
+- [ ] Implement R3 query rewrite schemas
+- [ ] Implement Page-as-Ducument with ChatGPT API
+- [ ] Evaluate with LLM feedback
+
+## Day 5: Add DuckDuckGo as a Search Engine
+1. Added DuckDuckGo as a search engine
+
+2. Evaluated SERAG-keyword & SERAG-question with DDG as a backend

@@ -130,11 +130,11 @@ class RagChatGPT(RagBaseLLM):
                         if len(q.split('.')[1]) != 0:
                             final_query.append(q.split('.')[1].strip())
                     else:
-                        final_query.append(q)
+                        if q.strip() != '':
+                            final_query.append(q)
                 return (final_query, True) if len(final_query) != 0 else (prompt, True)
             else:
                 if(query.startswith(('答案'))):
-
                     return (query[3:], False)
                 elif query.startswith(("Answer",'answer')):
                     return (query[7:], False)
