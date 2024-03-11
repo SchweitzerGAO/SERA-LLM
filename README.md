@@ -18,7 +18,7 @@ For question processing, a tested system input for ChatGPT is:
         """
 ```
 The model is more prone to generate questions than answer it directly although it knows the answer
-For **in-prompt SERAG** (*Search Engine Retrieval Augmented Generation*), a tested prompt for ChatGPT is:
+For in-prompt SERAG (*Search Engine Retrieval Augmented Generation*), a tested prompt for ChatGPT is:
 
 ```python
 """
@@ -92,25 +92,25 @@ There are cases that ChatGPT cannot process the question in a correct format. To
 
 3. Implemented in-prompt SERAG with ChatGPT API
 
-Comparison between raw ChatGPT and ChatGPT with SERAG-question is in `./demos/chatgpt/chatgpt-desc-question-*.txt`
+Comparison between raw ChatGPT and ChatGPT with SERAG-question is in `./demos/chatgpt/chatgpt-desc-hyqr-*.txt`
 
 ## Day 3: Description-as-Document with ChatGPT API(Evaluation)
 
 1. (Update) Implemented the function that process the question by keywords instead of by deeper questions
-Comparison between raw ChatGPT and ChatGPT with SERAG-keyword is in `./demos/chatgpt/chatgpt-desc-keyword-*.txt`
+Comparison between raw ChatGPT and ChatGPT with SERAG-keyword is in `./demos/chatgpt/chatgpt-desc-hykr-*.txt`
 
 2. Evaluated SERAG with ChatGPT on [hotpot_qa](https://huggingface.co/datasets/hotpot_qa) 
 
 F1-score:
-- With RAG(documents from hotpot-qa): 0.715
-- With SERAG-keyword: 0.890
-- with SERAG-question: 0.914
-
+- With RAG(documents are from hotpot-qa dataset): 
+- With SERAG-keyword: 0.457
+- with SERAG-question: 0.454
+- with SERAG-R3: 0.435
 ## Day 4: Periodical Summary
 Done: A naive SERAG system with Google Search and ChatGPT and its preliminary evaluation
 TODOs in the next period: 
 - [x] Add DuckDuckGo as a search engine
-- [ ] Implement R3 query rewrite schemas
+- [x] Implement Rewrite-Retrieve-Read(R3) query rewrite schema
 - [ ] Implement Page-as-Ducument with ChatGPT API
 - [ ] Evaluate with LLM feedback
 
@@ -118,3 +118,8 @@ TODOs in the next period:
 1. Added DuckDuckGo as a search engine
 
 2. Evaluated SERAG-keyword & SERAG-question with DDG as a backend
+
+## Day 6: Implement Rewrite-Retrieve-Read(R3) Query Rewrite Schema
+1. Implement & Evaluated Rewrite-Retrieve-Read(R3) query rewrite schema
+Comparison between raw ChatGPT and ChatGPT with SERAG-R3 is in `./demos/chatgpt/chatgpt-desc-r3-*.txt`
+2. Reformat the code gracefully

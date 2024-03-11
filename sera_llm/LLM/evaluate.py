@@ -3,13 +3,11 @@ import re
 import string
 import random
 from typing import List
-
 from datasets import load_dataset
 from chatgpt import RagChatGPT, model
 from base_llm import RagBaseLLM
-import time
 
-dataset = load_dataset("hotpot_qa",'distractor',split='validation', cache_dir='./hotpot-qa')
+dataset = load_dataset("hotpot_qa",'distractor',split='validation', cache_dir=r'D:\master\intern\SEALM\hotpot_qa')
 
 def get_prompts(indices: int):
     return [dataset[i]['question'] for i in indices]
@@ -57,7 +55,7 @@ def f1_score(output, gt):
 def evaluate(llm: RagBaseLLM, 
              n: int = 100,
              search: bool = False,
-             raw: bool = False):
+             ):
     indices = generate_idx(n)
     prompts = get_prompts(indices)
     gts = get_gts(indices)
@@ -69,14 +67,16 @@ def evaluate(llm: RagBaseLLM,
         output = llm.evaluation_hotpot(prompt=prompt, docs_list=docs_list)
         processed_output = postprocess(output)
         processed_gt = postprocess(gt)
-        f1 += f1_score(processed_output, processed_gt)
+        f1_this = f1_score(processed_output, processed_gt)
+        f1 += f1_this
         print(f'Question #{idx} finished')
         # time.sleep(1.5)
-    print(f1 / len(gt))
+    
+    print(f1)
         
         
 
-llm = RagChatGPT(model=model, lang='en',rewrite_method='hykr')
+llm = RagChatGPT(model=model, lang='en')
 
 evaluate(llm, search=True)
 

@@ -11,7 +11,7 @@ query_list = [
     '电影《第二十条》主要讲了什么？'
 ]
 def demo_chatgpt_desc():
-    llm = RagChatGPT(model=model)
+    llm = RagChatGPT(model=model, rewrite_method='r3')
     for i, q in enumerate(query_list):
         output_raw = model.chat.completions.create(
                 model="gpt-3.5-turbo",
@@ -22,7 +22,7 @@ def demo_chatgpt_desc():
             ).choices[0].message.content
         output_rag = llm.chat(prompt=q)
         docs = llm.docs
-        with open('../../demos/chatgpt-desc-keyword-1.txt','a',encoding='utf-8') as f:
+        with open(f'../../demos/chatgpt-{llm.read_method[:4]}-{llm.rewrite_method}-{llm.retrieve_backend}.txt','a',encoding='utf-8') as f:
             f.write(f"###############\nQuestion{i + 1}: {q}\n###############\n")
             f.write('-----------------------------------------\n')
             f.write("Raw ChatGPT\n")

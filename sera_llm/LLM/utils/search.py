@@ -9,9 +9,10 @@ ddgs = DDGS(proxies="http://localhost:7890")
 def desc_as_doc_search(query: Union[List, str], 
                   num_results_single, # number of results for a single query
                   num_results_multi, # number of results for multiple queries
-                  lang: str, 
+                  lang: str,
+                  backend: str,
                   advanced: bool = True,
-                  backend: str = 'ddg'):
+                ):
     """
     The 'description' field in the search result are deemed directly as the reference docs
     """
@@ -62,7 +63,8 @@ def page_as_doc_search(
                   query: Union[List, str], 
                   num_results_single: int, # number of results for a single query
                   num_results_multi: int, # number of results for multiple queries
-                  lang:str, 
+                  lang: str,
+                  backend: str,
                   advanced: bool = True):
     """
     Store webpages in the result in a vector database using LangChain(or llama index), which is deemed as reference docs.
