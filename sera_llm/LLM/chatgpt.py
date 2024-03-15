@@ -2,7 +2,8 @@ from typing import List, Tuple, Union
 from openai import OpenAI
 from base_llm import RagBaseLLM
 
-OPENAI_KEY = 'sk-wKk81cwZTJucpgbSaMcVZr1dTvgoISB1vaSBkw0mH3nc2d0c'
+with open('../../openai_key.txt','r') as f:
+    OPENAI_KEY = f.readlines()[0].strip()
 
 model = OpenAI(
     api_key=OPENAI_KEY,

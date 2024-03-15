@@ -78,6 +78,6 @@ def evaluate(llm: RagBaseLLM,
 
 llm = RagChatGPT(model=model, lang='en')
 
-evaluate(llm, search=True)
+evaluate(llm)
 
 

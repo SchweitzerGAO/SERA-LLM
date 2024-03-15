@@ -4,6 +4,8 @@
 > Intern working log below
 ## Day 1: Description-as-Document with ChatGPT WebUI
 
+Description-as-Document is a method which deems the `description` field returned
+
 1. Implemented description-as-document retrieval from google
 
 2. Tested prompts for ChatGPT for prompt deep-processing and prompt-RAG
@@ -102,7 +104,7 @@ Comparison between raw ChatGPT and ChatGPT with SERAG-keyword is in `./demos/cha
 2. Evaluated SERAG with ChatGPT on [hotpot_qa](https://huggingface.co/datasets/hotpot_qa) 
 
 F1-score:
-- With RAG(documents are from hotpot-qa dataset): 
+- With RAG(documents are from hotpot-qa dataset): 0.519
 - With SERAG-keyword: 0.457
 - with SERAG-question: 0.454
 - with SERAG-R3: 0.435
@@ -123,3 +125,5 @@ TODOs in the next period:
 1. Implement & Evaluated Rewrite-Retrieve-Read(R3) query rewrite schema
 Comparison between raw ChatGPT and ChatGPT with SERAG-R3 is in `./demos/chatgpt/chatgpt-desc-r3-*.txt`
 2. Reformat the code gracefully
+
+## Day 7: Implement Page-as-Ducument with ChatGPT API
