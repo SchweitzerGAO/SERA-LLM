@@ -127,3 +127,4 @@ Comparison between raw ChatGPT and ChatGPT with SERAG-R3 is in `./demos/chatgpt/
 2. Reformat the code gracefully
 
 ## Day 7: Implement Page-as-Ducument with ChatGPT API
+> TBD: May implement this after the interview
